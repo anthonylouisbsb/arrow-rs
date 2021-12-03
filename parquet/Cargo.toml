@@ -74,9 +74,5 @@ name = "parquet-rowcount"
 required-features = ["cli"]
 
 [[bench]]
-name = "arrow_writer"
-harness = false
-
-[[bench]]
-name = "arrow_array_reader"
+name = "parquet_reader_benchmark"
 harness = false
