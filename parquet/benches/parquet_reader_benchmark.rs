@@ -75,6 +75,8 @@ fn add_benches(c: &mut Criterion) {
         },
     );
 
+    // The code is commented because Arrow Rust does not support decimal types yet.
+
     // group.bench_function(
     //     "Read Decimal Column",
     //     |b| {
@@ -95,28 +97,30 @@ fn add_benches(c: &mut Criterion) {
     //         })
     //     },
     // );
-    //
-    // group.bench_function(
-    //     "Read Struct Column",
-    //     |b| {
-    //         b.iter(|| {
-    //             let path_from_env = env::var("ARROW_RUST_PARQUET_BENCHMARK_FILE").expect("ARROW_RUST_PARQUET_BENCHMARK_FILE is not set");
-    //             let file = File::open(path_from_env).unwrap();
-    //             let file_reader = SerializedFileReader::new(file).unwrap();
-    //             let mut arrow_reader = ParquetFileArrowReader::new(Arc::new(file_reader));
-    //
-    //             let mut record_batch_reader = arrow_reader
-    //                 .get_record_reader_by_columns(vec![4], batch_size)
-    //                 .unwrap();
-    //
-    //             let mut record_batch: arrow::record_batch::RecordBatch;
-    //             loop {
-    //                 record_batch = record_batch_reader.next().unwrap().unwrap();
-    //             }
-    //         })
-    //     },
-    // );
-    //
+
+    group.bench_function(
+        "Read Struct Column",
+        |b| {
+            b.iter(|| {
+                let path_from_env = env::var("ARROW_RUST_PARQUET_BENCHMARK_FILE").expect("ARROW_RUST_PARQUET_BENCHMARK_FILE is not set");
+                let file = File::open(path_from_env).unwrap();
+                let file_reader = SerializedFileReader::new(file).unwrap();
+                let mut arrow_reader = ParquetFileArrowReader::new(Arc::new(file_reader));
+
+                let mut record_batch_reader = arrow_reader
+                    .get_record_reader_by_columns(vec![3], batch_size)
+                    .unwrap();
+
+                for maybe_record_batch in record_batch_reader {
+                    let record_batch = maybe_record_batch.unwrap();
+                    black_box(record_batch);
+                }
+            })
+        },
+    );
+
+    // The code is commented because Arrow Rust does not support lists yet.
+
     // group.bench_function(
     //     "Read List of Structs Column",
     //     |b| {
