@@ -127,7 +127,7 @@ fn add_benches(c: &mut Criterion) {
                 let mut arrow_reader = ParquetFileArrowReader::new(Arc::new(file_reader));
 
                 let mut record_batch_reader = arrow_reader
-                    .get_record_reader_by_columns(vec![6], batch_size)
+                    .get_record_reader_by_columns(vec![5], batch_size)
                     .unwrap();
 
                 for maybe_record_batch in record_batch_reader {
@@ -148,7 +148,7 @@ fn add_benches(c: &mut Criterion) {
                 let mut arrow_reader = ParquetFileArrowReader::new(Arc::new(file_reader));
 
                 let mut record_batch_reader = arrow_reader
-                    .get_record_reader_by_columns(vec![7], batch_size)
+                    .get_record_reader_by_columns(vec![6], batch_size)
                     .unwrap();
 
                 for maybe_record_batch in record_batch_reader {
